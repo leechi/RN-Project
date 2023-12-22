@@ -2,7 +2,7 @@ import { TextInput, View, StyleSheet, Alert } from "react-native";
 import PrimaryButton from "../components/PrimaryButton";
 import { useState } from "react";
 
-const StartGameScreen = () => {
+const StartGameScreen = ({ onPickNumber }) => {
   const [enteredNumber, setEnteredNumber] = useState("");
 
   function numberInputHandler(enteredText) {
@@ -16,13 +16,14 @@ const StartGameScreen = () => {
   function confirmInputHandler() {
     const chosenNumber = parseInt(enteredNumber);
 
-    if (isNaN(chosenNumber) || chosenNumber <= 0 || chosenNumber > 9) {
+    if (isNaN(chosenNumber) || chosenNumber <= 0 || chosenNumber > 99) {
       //show alert ...
       Alert.alert("숫자가 아니에염.", "1부터 9까지 숫자에욤", [
         { text: "Okay", style: "destructive", onPress: resetInputHandler },
       ]);
       return;
     }
+    onPickNumber(chosenNumber);
   }
   return (
     <View style={styles.inputContainer}>
