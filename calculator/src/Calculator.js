@@ -12,10 +12,11 @@ const COLOR = {
   RESET: "#BABABA",
   OPERATOR: "#f39c29",
   NUM: "#555555",
+  SELECT: "#ffffff",
 };
 
 // Button type: 'reset' | 'operator' | 'num'
-const Button = ({ text, onPress, flex, type }) => {
+const Button = ({ text, onPress, flex, type, isSelected }) => {
   const backgroundColor =
     type === "reset"
       ? COLOR.RESET
@@ -29,7 +30,8 @@ const Button = ({ text, onPress, flex, type }) => {
       onPress={onPress}
       style={{
         flex: flex,
-        backgroundColor,
+        backgroundColor:
+          isSelected && type === "operator" ? "white" : backgroundColor,
         justifyContent: "center",
         alignItems: "center",
         borderRadius: "50%",
@@ -37,7 +39,14 @@ const Button = ({ text, onPress, flex, type }) => {
         margin: 5,
       }}
     >
-      <Text style={{ color: "white", fontSize: 40 }}>{text}</Text>
+      <Text
+        style={{
+          color: isSelected && type === "operator" ? COLOR.OPERATOR : "white",
+          fontSize: 40,
+        }}
+      >
+        {text}
+      </Text>
     </TouchableOpacity>
   );
 };
@@ -54,6 +63,7 @@ export default () => {
   const [result, setResult] = useState(null); // 12 -> 14
   const [tempInput, setTempInput] = useState(null); // 2
   const [tempOperator, setTempOperator] = useState(null); // +
+  console.log(currentOperator);
   return (
     <View>
       {/* 결과 */}
@@ -62,37 +72,67 @@ export default () => {
       </InputContainer>
       {/* [AC ~ /] */}
       <ButtonContainer>
-        <Button type="reset" text="C" onPress={() => null} flex={1} />
-        <Button type="reset" text="+/-" onPress={() => null} flex={1} />
-        <Button type="reset" text="%" onPress={() => null} flex={1} />
-        <Button type="operator" text="/" onPress={() => null} flex={1} />
+        {["C", "+/-", "%"].map((num) => (
+          <Button type="reset" text={`${num}`} onPress={() => null} flex={1} />
+        ))}
+        <Button
+          type="operator"
+          text="/"
+          isSelected={currentOperator === "/"}
+          onPress={() => setCurrentOperator("/")}
+          flex={1}
+        />
       </ButtonContainer>
       {/* [7 ~ x] */}
       <ButtonContainer>
-        <Button type="num" text="7" onPress={() => null} flex={1} />
-        <Button type="num" text="8" onPress={() => null} flex={1} />
-        <Button type="num" text="9" onPress={() => null} flex={1} />
-        <Button type="operator" text="X" onPress={() => null} flex={1} />
+        {[7, 8, 9].map((num) => (
+          <Button type="num" text={`${num}`} onPress={() => null} flex={1} />
+        ))}
+        <Button
+          type="operator"
+          text="X"
+          isSelected={currentOperator === "X"}
+          onPress={() => null}
+          flex={1}
+        />
       </ButtonContainer>
       {/* [4 ~ -] */}
       <ButtonContainer>
-        <Button type="num" text="4" onPress={() => null} flex={1} />
-        <Button type="num" text="5" onPress={() => null} flex={1} />
-        <Button type="num" text="6" onPress={() => null} flex={1} />
-        <Button type="operator" text="-" onPress={() => null} flex={1} />
+        {[4, 5, 6].map((num) => (
+          <Button type="num" text={`${num}`} onPress={() => null} flex={1} />
+        ))}
+        <Button
+          type="operator"
+          text="-"
+          isSelected={currentOperator === "-"}
+          onPress={() => null}
+          flex={1}
+        />
       </ButtonContainer>
       {/* [1 ~ +] */}
       <ButtonContainer>
-        <Button type="num" text="1" onPress={() => null} flex={1} />
-        <Button type="num" text="2" onPress={() => null} flex={1} />
-        <Button type="num" text="3" onPress={() => null} flex={1} />
-        <Button type="operator" text="+" onPress={() => null} flex={1} />
+        {[1, 2, 3].map((num) => (
+          <Button type="num" text={`${num}`} onPress={() => null} flex={1} />
+        ))}
+        <Button
+          type="operator"
+          text="+"
+          isSelected={currentOperator === "+"}
+          onPress={() => setCurrentOperator("+")}
+          flex={1}
+        />
       </ButtonContainer>
       {/* [0 ~ =] */}
       <ButtonContainer>
         <Button type="num" text="0" onPress={() => null} flex={2} />
         <Button type="num" text="." onPress={() => null} flex={1} />
-        <Button type="operator" text="=" onPress={() => null} flex={1} />
+        <Button
+          type="operator"
+          text="="
+          isSelected={currentOperator === "="}
+          onPress={() => setCurrentOperator("=")}
+          flex={1}
+        />
       </ButtonContainer>
     </View>
   );
